@@ -196,7 +196,7 @@ def get_char(name, server, target_region, api_key):
     return return_string
 
 
-async def pug(client, region, api_key, message):
+async def prog(client, region, api_key, message):
     target_region = region
     try:
         i = str(message.content).split(' ')
@@ -208,6 +208,6 @@ async def pug(client, region, api_key, message):
         await client.send_message(message.channel, character_info)
     except Exception as e:
         print(e)
-        await client.send_message(message.channel, "(test)Error With Name or Server\n"
+        await client.send_message(message.channel, "Error With Name or Server\n"
                                                    "Use: !pug <name> <server> <region>\n"
                                                    "Hyphenate Two Word Servers (Ex: Twisting-Nether)")
