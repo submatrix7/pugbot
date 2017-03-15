@@ -8,6 +8,7 @@ LEG_WITH_SOCKET = [
     137220, 137223, 137276, 137382, 138854
 ]
 
+ENCHANTABLE_SLOTS = ["neck", "back", "finger1", "finger2"]
 RAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
 
 
@@ -17,6 +18,8 @@ region_locale = {
 #    'tw': ['tw', 'zh_TW', 'zh'],
     'eu': ['eu', 'en_GB', 'en']
 }
+
+server_locale = 'thrall'
 
 def get_sockets(player_dictionary):
     """
@@ -50,6 +53,46 @@ def get_sockets(player_dictionary):
 
     return {"total_sockets": sockets,
             "equipped_gems": equipped_gems}
+
+
+def get_enchants(player_dictionary):
+    """
+    Get count of enchants missing and slots that are missing
+    :param player_dictionary:
+    :return: dict()
+    """
+    missing_enchant_slots = []
+    for slot in ENCHANTABLE_SLOTS:
+        if "enchant" not in player_dictionary["items"][slot]["tooltipParams"]:
+            missing_enchant_slots.append(slot)
+
+    return {
+        "enchantable_slots": len(ENCHANTABLE_SLOTS),
+        "missing_slots": missing_enchant_slots,
+        "total_missing": len(missing_enchant_slots)
+    }
+
+
+def get_raid_progression(player_dictionary, raid):
+    r = [x for x in player_dictionary["progression"]
+    ["raids"] if x["name"] in raid][0]
+    normal = 0
+    heroic = 0
+    mythic = 0
+
+    for boss in r["bosses"]:
+        if boss["normalKills"] > 0:
+            normal += 1
+        if boss["heroicKills"] > 0:
+            heroic += 1
+        if boss["mythicKills"] > 0:
+            mythic += 1
+
+    return {"normal": normal,
+            "heroic": heroic,
+            "mythic": mythic,
+            "total_bosses": len(r["bosses"])}
+
 
 def get_mythic_progression(player_dictionary):
     achievements = player_dictionary["achievements"]
@@ -95,8 +138,28 @@ def get_char(name, server, target_region, api_key):
 
     equipped_ivl = player_dict["items"]["averageItemLevelEquipped"]
     sockets = get_sockets(player_dict)
+    enchants = get_enchants(player_dict)
 
     mythic_progress = get_mythic_progression(player_dict)
+
+    # Build raid progression
+    raid_progress = {}
+    for raid in RAIDS:
+        raid_name = raid[0]
+        raid_abrv = raid[1]
+        raid_progress[raid_name] = {
+            'abrv': raid_abrv,
+            'progress': get_raid_progression(player_dict, raid_name)
+        }
+
+    armory_url = 'http://{}.battle.net/wow/{}/character/{}/{}/advanced'.format(
+        region_locale[target_region][0], region_locale[target_region][2], server, name)
+
+    return_string = ''
+    return_string += "**%s** - **%s** - **%s %s**\n" % (
+        name.title(), server.title(), player_dict['level'], class_dict[player_dict['class']])
+    return_string += '<{}>\n'.format(armory_url)
+    return_string += '```CSS\n'  # start Markdown
 
     # iLvL
     return_string += "Equipped Item Level: %s\n" % equipped_ivl
@@ -106,9 +169,30 @@ def get_char(name, server, target_region, api_key):
                                                              mythic_progress["plus_five"],
                                                              mythic_progress["plus_ten"])
 
+    # Raid Progression
+    for raid, data in raid_progress.items():
+        progress = data['progress']
+        return_string += '{abrv}: {normal}/{total} (N), {heroic}/{total} (H), {mythic}/{total} (M)\n'.format(
+            abrv=data['abrv'],
+            normal=progress['normal'],
+            heroic=progress['heroic'],
+            mythic=progress['mythic'],
+            total=progress['total_bosses']
+        )
+
     # Gems
     return_string += "Gems Equipped: %s/%s\n" % (
         sockets["equipped_gems"], sockets["total_sockets"])
+
+    # Enchants
+    return_string += "Enchants: %s/%s\n" % (enchants["enchantable_slots"] - enchants["total_missing"],
+                                            enchants["enchantable_slots"])
+    if enchants["total_missing"] > 0:
+        return_string += "Missing Enchants: {0}".format(
+            ", ".join(enchants["missing_slots"]))
+
+    return_string += '```'  # end Markdown
+    return return_string
 
 
 async def mythic(client, region, api_key, message):
@@ -124,5 +208,5 @@ async def mythic(client, region, api_key, message):
     except Exception as e:
         print(e)
         await client.send_message(message.channel, "Error With Name or Server\n"
-                                                   "Use: !test4 <name> <server> <region>\n"
+                                                   "Use: !pug <name> <server> <region>\n"
                                                    "Hyphenate Two Word Servers (Ex: Twisting-Nether)")
