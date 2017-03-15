@@ -112,8 +112,6 @@ def get_char(name, server, target_region, api_key):
     sockets = get_sockets(player_dict)
     enchants = get_enchants(player_dict)
 
-    mythic_progress = get_mythic_progression(player_dict)
-
     # Build raid progression
     raid_progress = {}
     for raid in RAIDS:
