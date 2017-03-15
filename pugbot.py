@@ -34,11 +34,14 @@ async def on_message(message):
 
     if message.content.startswith('!info') or message.content.startswith('!help'):
         await CLIENT.send_message(message.channel, "I'm PugBotTEST2, the pug analyzer!\n"
-                                                   "Use: !pug <name> <server> <region> \n"
-                                                   "Example: !pug Basimot Lightbringer us")
+                                                   "Use: !prog <name> <server> <region> \n"
+                                                   "Example: !prog Basimot Lightbringer us")
 
-    if message.content.startswith('!pug'):
+    if message.content.startswith('!prog'):
         await prog(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
+        
+    if message.content.startswith('!mythic'):
+        await mythic(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
 
 
 if __name__ == '__main__':
