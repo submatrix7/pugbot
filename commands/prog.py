@@ -1,12 +1,6 @@
 import json
 import requests
 
-LEG_WITH_SOCKET = [
-    132369, 132410, 137044, 132444, 132449, 132452, 132460, 133973, 133974, 137037, 137038, 137039, 137040,
-    137041, 137042, 137043, 132378, 137045, 137046, 137047, 137048, 137049, 137050, 137051, 137052, 137054, 137055,
-    137220, 137223, 137276, 137382, 138854
-]
-
 RAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
 
 region_locale = {
@@ -15,40 +9,6 @@ region_locale = {
 #    'tw': ['tw', 'zh_TW', 'zh'],
     'eu': ['eu', 'en_GB', 'en']
 }
-
-def get_sockets(player_dictionary):
-    """
-    Return dict with total sockets and count of equipped gems and slots that are missing
-
-    :param player_dictionary: Retrieved player dict from API
-    :return: dict()
-    """
-    sockets = 0
-    equipped_gems = 0
-
-    for item in player_dictionary["items"]:
-        if item in "averageItemLevel" or item in "averageItemLevelEquipped":
-            continue
-
-        if int(player_dictionary["items"][item]["id"]) in LEG_WITH_SOCKET:
-            sockets += 1
-        else:
-            for bonus in player_dictionary["items"][item]["bonusLists"]:
-                if bonus == 1808:  # 1808 is Legion prismatic socket bonus
-                    sockets += 1
-
-            if item in ["neck", "finger1", "finger2"]:
-                if player_dictionary["items"][item]["context"] == "trade-skill":
-                    sockets += 1
-
-        for ttip in player_dictionary["items"][item]["tooltipParams"]:
-            if item in "mainHand" or item in "offHand":  # Ignore Relic
-                continue
-            if "gem" in ttip:  # Equipped gems are listed as gem0, gem1, etc...
-                equipped_gems += 1
-
-    return {"total_sockets": sockets,
-            "equipped_gems": equipped_gems}
 
 def get_raid_progression(player_dictionary, raid):
     r = [x for x in player_dictionary["progression"]
@@ -87,8 +47,8 @@ def get_char(name, server, target_region, api_key):
     class_dict = json.loads(r.text)
     class_dict = {c['id']: c['name'] for c in class_dict["classes"]}
 
-    equipped_ivl = player_dict["items"]["averageItemLevelEquipped"]
-    sockets = get_sockets(player_dict)
+    equipped_ilvl = player_dict["items"]["averageItemLevelEquipped"]
+    average_ilvl = player_dict["items"]["averageItemLevel"]
 
     # Build raid progression
     raid_progress = {}
@@ -110,7 +70,8 @@ def get_char(name, server, target_region, api_key):
     return_string += '```CSS\n'  # start Markdown
 
     # iLvL
-    return_string += "Equipped Item Level: %s\n" % equipped_ivl
+    return_string += "Equipped Item Level: %s\n" % equipped_ilvl
+    return_string += "Average Item Level: %s\n\n" % average_ilvl
 
     # Raid Progression
     for raid, data in raid_progress.items():
@@ -123,14 +84,8 @@ def get_char(name, server, target_region, api_key):
             total=progress['total_bosses']
         )
 
-    # Gems
-    return_string += "Gems Equipped: %s/%s\n" % (
-        sockets["equipped_gems"], sockets["total_sockets"])
-
-
     return_string += '```'  # end Markdown
     return return_string
-
 
 async def prog(client, region, api_key, message):
     target_region = region
