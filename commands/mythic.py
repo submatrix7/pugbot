@@ -9,12 +9,7 @@ LEG_WITH_SOCKET = [
 
 ENCHANTABLE_SLOTS = ["neck", "back", "finger1", "finger2"]
 
-region_locale = {
-    'us': ['us', 'en_US', 'en'],
-#    'kr': ['kr', 'ko_KR', 'ko'],
-#    'tw': ['tw', 'zh_TW', 'zh'],
-    'eu': ['eu', 'en_GB', 'en']
-}
+region_locale = {'us': ['us', 'en_US', 'en']}
 
 def get_sockets(player_dictionary):
     """
