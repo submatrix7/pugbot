@@ -99,6 +99,7 @@ def get_mythic_progression(player_dictionary):
     plus_two = 0
     plus_five = 0
     plus_ten = 0
+    plus_fifteen = 0
 
     if 33096 in achievements["criteria"]:
         index = achievements["criteria"].index(33096)
@@ -111,11 +112,16 @@ def get_mythic_progression(player_dictionary):
     if 33098 in achievements["criteria"]:
         index = achievements["criteria"].index(33098)
         plus_ten = achievements["criteriaQuantity"][index]
+    
+    if 32028 in achievements["criteria"]:
+        index = achievements["criteria"].index(32028)
+        plus_fifteen = achievements["criteriaQuantity"][index]
 
     return {
         "plus_two": plus_two,
         "plus_five": plus_five,
-        "plus_ten": plus_ten
+        "plus_ten": plus_ten,
+        "plus_fifteen", plus_fifteen
     }
 
 
@@ -165,9 +171,10 @@ def get_char(name, server, target_region, api_key):
     return_string += "Equipped Item Level: %s\n" % equipped_ivl
 
     # Mythic Progression
-    return_string += "Mythics: +2: %s, +5: %s, +10: %s\n" % (mythic_progress["plus_two"],
-                                                             mythic_progress["plus_five"],
-                                                             mythic_progress["plus_ten"])
+    return_string += "Mythics: +2: %s, +5: %s, +10: %s, +15: %s\n" % (mythic_progress["plus_two"],
+                                                                      mythic_progress["plus_five"],
+                                                                      mythic_progress["plus_ten"],
+                                                                       mythic_progress["plus_fifteen"])
 
     # Raid Progression
     for raid, data in raid_progress.items():
@@ -208,5 +215,5 @@ async def mythic(client, region, api_key, message):
     except Exception as e:
         print(e)
         await client.send_message(message.channel, "Error With Name or Server\n"
-                                                   "Use: !pug <name> <server> <region>\n"
+                                                   "Use: !test5 <name> <server> <region>\n"
                                                    "Hyphenate Two Word Servers (Ex: Twisting-Nether)")
