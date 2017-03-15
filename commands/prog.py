@@ -7,9 +7,7 @@ LEG_WITH_SOCKET = [
     137220, 137223, 137276, 137382, 138854
 ]
 
-ENCHANTABLE_SLOTS = ["neck", "back", "finger1", "finger2"]
 RAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
-
 
 region_locale = {
     'us': ['us', 'en_US', 'en'],
@@ -52,25 +50,6 @@ def get_sockets(player_dictionary):
     return {"total_sockets": sockets,
             "equipped_gems": equipped_gems}
 
-
-def get_enchants(player_dictionary):
-    """
-    Get count of enchants missing and slots that are missing
-    :param player_dictionary:
-    :return: dict()
-    """
-    missing_enchant_slots = []
-    for slot in ENCHANTABLE_SLOTS:
-        if "enchant" not in player_dictionary["items"][slot]["tooltipParams"]:
-            missing_enchant_slots.append(slot)
-
-    return {
-        "enchantable_slots": len(ENCHANTABLE_SLOTS),
-        "missing_slots": missing_enchant_slots,
-        "total_missing": len(missing_enchant_slots)
-    }
-
-
 def get_raid_progression(player_dictionary, raid):
     r = [x for x in player_dictionary["progression"]
     ["raids"] if x["name"] in raid][0]
@@ -110,7 +89,6 @@ def get_char(name, server, target_region, api_key):
 
     equipped_ivl = player_dict["items"]["averageItemLevelEquipped"]
     sockets = get_sockets(player_dict)
-    enchants = get_enchants(player_dict)
 
     # Build raid progression
     raid_progress = {}
@@ -149,12 +127,6 @@ def get_char(name, server, target_region, api_key):
     return_string += "Gems Equipped: %s/%s\n" % (
         sockets["equipped_gems"], sockets["total_sockets"])
 
-    # Enchants
-    return_string += "Enchants: %s/%s\n" % (enchants["enchantable_slots"] - enchants["total_missing"],
-                                            enchants["enchantable_slots"])
-    if enchants["total_missing"] > 0:
-        return_string += "Missing Enchants: {0}".format(
-            ", ".join(enchants["missing_slots"]))
 
     return_string += '```'  # end Markdown
     return return_string
