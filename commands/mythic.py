@@ -114,21 +114,16 @@ def get_char(name, server, target_region, api_key):
     average_ilvl = player_dict["items"]["averageItemLevel"]
     sockets = get_sockets(player_dict)
     enchants = get_enchants(player_dict)
-
     mythic_progress = get_mythic_progression(player_dict)
-
-    armory_url = 'http://{}.battle.net/wow/{}/character/{}/{}/advanced'.format(
-        region_locale[target_region][0], region_locale[target_region][2], server, name)
 
     return_string = ''
     return_string += "**%s** - **%s** - **%s %s**\n" % (
         name.title(), server.title(), player_dict['level'], class_dict[player_dict['class']])
-    return_string += '<{}>\n'.format(armory_url)
     return_string += '```CSS\n'  # start Markdown
 
     # iLvL
-    return_string += "Equipped Item Level: %s\n" % equipped_ivl
-    return_string += "Average Item Level: %s \n\n" % average_ilvl
+    return_string += "**Equipped Item Level: %s**\n" % equipped_ivl
+    return_string += "**Average Item Level: %s** \n\n" % average_ilvl
 
     # Mythic Progression
     return_string += "Mythics Completed\n +2: %s\n +5: %s\n+10: %s\n+15: %s\n\n" % (mythic_progress["plus_two"],
