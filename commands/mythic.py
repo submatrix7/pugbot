@@ -159,13 +159,13 @@ async def mythic(client, region, api_key, message):
     try:
         i = str(message.content).split(' ')
         name = i[1]
-        server = 'thrall'
+        server = i[2]
         if len(i) == 4 and i[3].lower() in region_locale.keys():
             target_region = i[3].lower()
         character_info = get_char(name, server, target_region, api_key)
         await client.send_message(message.channel, character_info)
     except Exception as e:
         print(e)
-        await client.send_message(message.channel, "Error With Name or Server\n"
-                                                   "Use: !test6 <name> <server> <region>\n"
+        await client.send_message(message.channel, "Error with Name or Server\n"
+                                                   "Use: ?mythic <name> <server>\n"
                                                    "Hyphenate Two Word Servers (Ex: Twisting-Nether)")
