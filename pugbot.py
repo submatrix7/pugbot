@@ -37,7 +37,7 @@ async def on_message(message):
                                                    "Use: !prog <name> <server> <region> \n"
                                                    "Example: !prog Basimot Lightbringer us")
 
-    if message.content.startswith('!prog'):
+    if message.content.startswith('?prog'):
         await prog(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
         
     if message.content.startswith('?mythic'):
