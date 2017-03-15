@@ -131,10 +131,10 @@ def get_char(name, server, target_region, api_key):
     return_string += '```CSS\n'  # start Markdown
 
     # iLvL
-    return_string += "Equipped Item Level: %s\n" % equipped_ivl
+    return_string += "Equipped Item Level: %s\n\n" % equipped_ivl
 
     # Mythic Progression
-    return_string += "Mythics: +2: %s, +5: %s, +10: %s, +15: %s\n" % (mythic_progress["plus_two"],
+    return_string += "Mythics Completed\n +2: %s\n, +5: %s\n, +10: %s\n, +15: %s\n\n" % (mythic_progress["plus_two"],
                                                                       mythic_progress["plus_five"],
                                                                       mythic_progress["plus_ten"],
                                                                       mythic_progress["plus_fifteen"])
