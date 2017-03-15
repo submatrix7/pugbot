@@ -4,7 +4,8 @@ import os
 import discord
 
 # Commands #
-from commands.pug import pug
+from commands.prog import prog
+from commands.mythic import mythic
 
 CLIENT = discord.Client()
 
@@ -37,7 +38,7 @@ async def on_message(message):
                                                    "Example: !pug Basimot Lightbringer us")
 
     if message.content.startswith('!pug'):
-        await pug(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
+        await prog(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
 
 
 if __name__ == '__main__':
