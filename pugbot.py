@@ -40,7 +40,7 @@ async def on_message(message):
     if message.content.startswith('!prog'):
         await prog(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
         
-    if message.content.startswith('!mythic'):
+    if message.content.startswith('?mythic'):
         await mythic(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
 
 
