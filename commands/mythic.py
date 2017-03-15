@@ -134,10 +134,10 @@ def get_char(name, server, target_region, api_key):
     return_string += "Equipped Item Level: %s\n\n" % equipped_ivl
 
     # Mythic Progression
-    return_string += "Mythics Completed\n+2: %s\n+5: %s\n+10: %s\n+15: %s\n\n" % (mythic_progress["plus_two"],
-                                                                      mythic_progress["plus_five"],
-                                                                      mythic_progress["plus_ten"],
-                                                                      mythic_progress["plus_fifteen"])
+    return_string += "Mythics Completed\n +2: %s\n +5: %s\n+10: %s\n+15: %s\n\n" % (mythic_progress["plus_two"],
+                                                                                    mythic_progress["plus_five"],
+                                                                                    mythic_progress["plus_ten"],
+                                                                                    mythic_progress["plus_fifteen"])
 
     # Gems
     return_string += "Gems Equipped: %s/%s\n" % (
