@@ -1,13 +1,12 @@
 import json
 import requests
 
-RAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
+cRAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
 
-region_locale = {'us': ['us', 'en_US', 'en']}
+#region_locale = {'us': ['us', 'en_US', 'en']}
 
 def get_raid_progression(player_dictionary, raid):
-    r = [x for x in player_dictionary["progression"]
-    ["raids"] if x["name"] in raid][0]
+    r = [x for x in player_dictionary["progression"]["raids"] if x["name"] in raid][0]
     normal = 0
     heroic = 0
     mythic = 0
@@ -47,7 +46,7 @@ def get_char(name, server, target_region, api_key):
 
     # Build raid progression
     raid_progress = {}
-    for raid in RAIDS:
+    for raid in cRAIDS:
         raid_name = raid[0]
         raid_abrv = raid[1]
         raid_progress[raid_name] = {
