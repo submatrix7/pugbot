@@ -3,7 +3,7 @@ import requests
 
 cRAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
 
-#region_locale = {'us': ['us', 'en_US', 'en']}
+region_locale = {'us': ['us', 'en_US', 'en']}
 
 def get_raid_progression(player_dictionary, raid):
     r = [x for x in player_dictionary["progression"]["raids"] if x["name"] in raid][0]
