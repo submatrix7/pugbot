@@ -134,10 +134,10 @@ def get_char(name, server, target_region, api_key):
         mythic_progress["plus_fifteen"])
 
     # Gems
-    return_string += "Gems Equipped: **%s/%s**\n" % (sockets["equipped_gems"], sockets["total_sockets"])
+    return_string += "Gems Equipped: **%s**/**%s**\n" % (sockets["equipped_gems"], sockets["total_sockets"])
 
     # Enchants
-    return_string += "Enchants: **%s/%s**\n" % (enchants["enchantable_slots"] - enchants["total_missing"],
+    return_string += "Enchants: **%s**/**%s**\n" % (enchants["enchantable_slots"] - enchants["total_missing"],
                                             enchants["enchantable_slots"])
     if enchants["total_missing"] > 0:
         return_string += "Missing Enchants: {0}".format(
