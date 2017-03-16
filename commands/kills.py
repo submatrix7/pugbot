@@ -1,6 +1,7 @@
 import json
 import requests
 
+#Declare the current raid to gather boss kills from
 cRAID = ['The Nighthold']
 
 region_locale = {'us': ['us', 'en_US', 'en']}
@@ -47,8 +48,7 @@ def get_raid_progression(player_dictionary, raid):
     #Build
     raid_progress = {}
     for raid in cRAID:
-        raid_name = raid[0]
-        raid_progress[raid_name] = ['progress'] get_raid_progression(player_dict, raid_name)
+        raid_progress = ['progress'] get_raid_progression(player_dict, raid_name)
 
     return_string = ''
     return_string += "**%s** - **%s** - **%s %s**\n" % (
