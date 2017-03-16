@@ -6,6 +6,7 @@ import discord
 # Commands #
 from commands.prog import prog
 from commands.mythic import mythic
+from commands.kills import kills
 
 CLIENT = discord.Client()
 
@@ -33,15 +34,23 @@ async def on_ready():
 async def on_message(message):
 
     if message.content.startswith('!info') or message.content.startswith('!help'):
-        await CLIENT.send_message(message.channel, "I'm PugBotTEST2, the pug analyzer!\n"
-                                                   "Use: !prog <name> <server> <region> \n"
-                                                   "Example: !prog Basimot Lightbringer us")
+        await CLIENT.send_message(message.channel, 
+                        "I'm PugBot, the pug checker!\n"
+                        "Available commands are:
+                        "     ?prog (for bosses killed across all expansion raids and difficulties)"
+                        "     ?mythic (for seeing how many successful Mythic+ dungeons have been completed across which difficulties)
+                        "     ?kills (for seeing how many times each boss has been killed in highest difficult completed)
+                        "Use: <command> <name> <server>\n"
+                        "Example: !prog Cornelious Area-52")
 
     if message.content.startswith('?prog'):
         await prog(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
         
     if message.content.startswith('?mythic'):
         await mythic(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
+        
+    if message.content.startswith('?kills'):
+        await kills(CLIENT, DEFAULT_REGION, BLIZZARD_API_KEY, message)
 
 
 if __name__ == '__main__':
