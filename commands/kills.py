@@ -28,7 +28,7 @@ def get_char(name, server, target_region, api_key):
 
     #Test
 def get_raid_progression(player_dictionary, raid):
-    r = x for x in player_dictionary["progression"]["raids"] if x["name"] = cRAID
+    r = (x for x in player_dictionary["progression"]["raids"] if x["name"] = cRAID)
     nkills = 0
     hkills = 0
     mkills = 0
