@@ -71,7 +71,7 @@ def get_char(name, server, target_region, api_key):
     # Raid Progression
     for raid, data in raid_progress.items():
         progress = data['progress']
-        return_string += '{abrv}\n {normal}/{total} (N)\n {heroic}/{total} (H)\n {mythic}/{total} (M)\n'.format(
+        return_string += '{abrv}\n {normal}/{total} (N)\n {heroic}/{total} (H)\n {mythic}/{total} (M)\n\n'.format(
             abrv=data['abrv'],
             normal=progress['normal'],
             heroic=progress['heroic'],
