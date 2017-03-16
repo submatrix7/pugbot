@@ -3,12 +3,7 @@ import requests
 
 RAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
 
-region_locale = {
-    'us': ['us', 'en_US', 'en'],
-#    'kr': ['kr', 'ko_KR', 'ko'],
-#    'tw': ['tw', 'zh_TW', 'zh'],
-    'eu': ['eu', 'en_GB', 'en']
-}
+region_locale = {'us': ['us', 'en_US', 'en']}
 
 def get_raid_progression(player_dictionary, raid):
     r = [x for x in player_dictionary["progression"]
@@ -76,7 +71,7 @@ def get_char(name, server, target_region, api_key):
     # Raid Progression
     for raid, data in raid_progress.items():
         progress = data['progress']
-        return_string += '{abrv}: {normal}/{total} (N), {heroic}/{total} (H), {mythic}/{total} (M)\n'.format(
+        return_string += '{abrv}\n {normal}/{total} (N)\n {heroic}/{total} (H)\n {mythic}/{total} (M)\n'.format(
             abrv=data['abrv'],
             normal=progress['normal'],
             heroic=progress['heroic'],
