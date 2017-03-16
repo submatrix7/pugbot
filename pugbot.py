@@ -35,11 +35,11 @@ async def on_message(message):
 
     if message.content.startswith('!info') or message.content.startswith('!help'):
         await CLIENT.send_message(message.channel, 
-                        "I'm PugBot, the pug checker!\n"
-                        "Available commands are:"
-                        "     ?prog (for bosses killed across all expansion raids and difficulties)"
-                        "     ?mythic (for seeing how many successful Mythic+ dungeons have been completed across which difficulties)"
-                        "     ?kills (for seeing how many times each boss has been killed in highest difficult completed)"
+                        "I'm PugBot, the pug checker!\n\n"
+                        "Available commands are:\n"
+                        "     ?prog (for bosses killed across all expansion raids and difficulties)\n"
+                        "     ?mythic (for seeing how many successful Mythic+ dungeons have been completed across which difficulties)\n"
+                        "     ?kills (for seeing how many times each boss has been killed in highest difficult completed)\n\n"
                         "Use: <command> <name> <server>\n"
                         "Example: !prog Cornelious Area-52")
 
