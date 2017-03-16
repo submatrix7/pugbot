@@ -1,7 +1,7 @@
 import json
 import requests
 
-RAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
+cRAID = ['The Nighthold']
 
 region_locale = {'us': ['us', 'en_US', 'en']}
 
@@ -26,45 +26,30 @@ def get_char(name, server, target_region, api_key):
     average_ilvl = player_dict["items"]["averageItemLevel"]
 
     #Test
-    def get_raid_progression(player_dictionary, raid):
-        r = [x for x in player_dictionary["progression"]
-        ["raids"] if x["name"] in raid][0]
-        nkills = 0
-        hkills = 0
-        mkills = 0
+def get_raid_progression(player_dictionary, raid):
+    r = [x for x in player_dictionary["progression"]["raids"] if x["name"] in raid][0]
+    nkills = 0
+    hkills = 0
+    mkills = 0
     
-    boss_list = {}
+    boss_kills = {}
     for boss in r["bosses"]:
         boss_name = boss[0]
-        boss_list[boss_name] = {
+        boss_kills[boss_name] = {
             'bossName': boss["name"],
             'nkills': boss["normalKills"],
             'hkills': boss["heroicKills"],
             'mkills': boss["mythicKills"]
         }
 
-    return {boss_list}
+    return {boss_kills}
 
     #Build
     raid_progress = {}
-    for raid in RAIDS:
+    for raid in cRAID:
         raid_name = raid[0]
-        raid_progress[raid_name] = {
-            'name': raid_name,
-            'progress': get_raid_progression(player_dict, raid_name)
-        }
-    
-    #Output
-    for raid, data in raid_progress.items():
-        progress = data['progress']
-        return_string += '{name}: {boss}/{nkills} (N), {boss}/{hkills} (H), {boss}/{mkills} (M)\n'.format(
-            name=data['name'],
-            boss=progress['boss'],
-            nkills=progress['nkills'],
-            hkills=progress['hkills'],
-            mkills=progress['mkills']
-        )
-        
+        raid_progress[raid_name] = 'progress': get_raid_progression(player_dict, raid_name)
+
     return_string = ''
     return_string += "**%s** - **%s** - **%s %s**\n" % (
         name.title(), server.title(), player_dict['level'], class_dict[player_dict['class']])
@@ -73,6 +58,17 @@ def get_char(name, server, target_region, api_key):
     # iLvL
     return_string += "Equipped Item Level: %s\n" % equipped_ilvl
     return_string += "Average Item Level: %s\n\n" % average_ilvl
+    
+    #Boss Output
+    for raid, data in raid_progress.items():
+        progress = data['progress']
+        return_string += "**%s Bosses Killed\n**" % cRaid
+        return_string += '{boss}: {nkills} (N) - {hkills} (H) - {mkills} (M)\n'.format(
+            boss=progress['bossName'],
+            nkills=progress['nkills'],
+            hkills=progress['hkills'],
+            mkills=progress['mkills']
+        )
 
     return_string += '```'  # end Markdown
     return return_string
