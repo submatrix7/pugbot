@@ -3,32 +3,7 @@ import requests
 
 RAIDS = [('The Emerald Nightmare', 'EN'), ('Trial of Valor', 'TOV'), ('The Nighthold', 'NH')]
 
-region_locale = {
-    'us': ['us', 'en_US', 'en'],
-#    'kr': ['kr', 'ko_KR', 'ko'],
-#    'tw': ['tw', 'zh_TW', 'zh'],
-    'eu': ['eu', 'en_GB', 'en']
-}
-
-def get_raid_progression(player_dictionary, raid):
-    r = [x for x in player_dictionary["progression"]
-    ["raids"] if x["name"] in raid][0]
-    normal = 0
-    heroic = 0
-    mythic = 0
-
-    for boss in r["bosses"]:
-        if boss["normalKills"] > 0:
-            normal += 1
-        if boss["heroicKills"] > 0:
-            heroic += 1
-        if boss["mythicKills"] > 0:
-            mythic += 1
-
-    return {"normal": normal,
-            "heroic": heroic,
-            "mythic": mythic,
-            "total_bosses": len(r["bosses"])}
+region_locale = {'us': ['us', 'en_US', 'en']}
 
 def get_char(name, server, target_region, api_key):
     r = requests.get("https://%s.api.battle.net/wow/character/%s/%s?fields=items+progression+achievements&locale=%s&apikey=%s" % (
@@ -50,44 +25,59 @@ def get_char(name, server, target_region, api_key):
     equipped_ilvl = player_dict["items"]["averageItemLevelEquipped"]
     average_ilvl = player_dict["items"]["averageItemLevel"]
 
-    # Build raid progression
+    #Test
+    def get_raid_progression(player_dictionary, raid):
+    r = [x for x in player_dictionary["progression"]
+    ["raids"] if x["name"] in raid][0]
+    nkills = 0
+    hkills = 0
+    mkills = 0
+    
+    boss_list = {}
+    for boss in r["bosses"]:
+        boss_name = boss[0]
+        boss_list[boss_name] = {
+            'bossName': boss["name"],
+            'nkills': boss["normalKills"],
+            'hkills': boss["heroicKills"],
+            'mkills': boss["mythicKills"]
+        }
+
+    return {boss_list}
+
+    #Build
     raid_progress = {}
     for raid in RAIDS:
         raid_name = raid[0]
-        raid_abrv = raid[1]
         raid_progress[raid_name] = {
-            'abrv': raid_abrv,
+            'name': raid_name,
             'progress': get_raid_progression(player_dict, raid_name)
         }
-
-    armory_url = 'http://{}.battle.net/wow/{}/character/{}/{}/advanced'.format(
-        region_locale[target_region][0], region_locale[target_region][2], server, name)
-
+    
+    #Output
+    for raid, data in raid_progress.items():
+        progress = data['progress']
+        return_string += '{name}: {boss}/{nkills} (N), {boss}/{hkills} (H), {boss}/{mkills} (M)\n'.format(
+            name=data['name'],
+            boss=progress['boss'],
+            nkills=progress['nkills'],
+            hkills=progress['hkills'],
+            mkills=progress['mkills']
+        )
+        
     return_string = ''
     return_string += "**%s** - **%s** - **%s %s**\n" % (
         name.title(), server.title(), player_dict['level'], class_dict[player_dict['class']])
-    return_string += '<{}>\n'.format(armory_url)
     return_string += '```CSS\n'  # start Markdown
 
     # iLvL
     return_string += "Equipped Item Level: %s\n" % equipped_ilvl
     return_string += "Average Item Level: %s\n\n" % average_ilvl
 
-    # Raid Progression
-    for raid, data in raid_progress.items():
-        progress = data['progress']
-        return_string += '{abrv}: {normal}/{total} (N), {heroic}/{total} (H), {mythic}/{total} (M)\n'.format(
-            abrv=data['abrv'],
-            normal=progress['normal'],
-            heroic=progress['heroic'],
-            mythic=progress['mythic'],
-            total=progress['total_bosses']
-        )
-
     return_string += '```'  # end Markdown
     return return_string
 
-async def prog(client, region, api_key, message):
+async def kills(client, region, api_key, message):
     target_region = region
     try:
         i = str(message.content).split(' ')
