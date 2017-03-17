@@ -29,6 +29,14 @@ def get_char(name, server, target_region, api_key):
     #Test
 def get_raid_progression(player_dictionary, raid):
     r = (x for x in player_dictionary["progression"]["raids"] if x["name"] in cRAID)
+
+    #Test if previous command worked
+    
+    for boss in r["bosses"]
+        boss_name = boss["name"]
+        return_string = ''
+        return_string += "Boss Name: %s" % boss_name
+"""
     nkills = 0
     hkills = 0
     mkills = 0
@@ -66,6 +74,9 @@ def get_raid_progression(player_dictionary, raid):
         )
 
     return_string += '```'  # end Markdown
+
+"""
+
     return return_string
 
 async def kills(client, region, api_key, message):
