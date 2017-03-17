@@ -30,13 +30,23 @@ def get_char(name, server, target_region, api_key):
 def get_raid_progression(player_dictionary, raid):
     r = (x for x in player_dictionary["progression"]["raids"] if x["name"] in cRAID)
 
+    
+    #output test
+    return_string = ''
+    return_string += "test1: %s \n" % cRAID
+    return_string += "test2: %s \n" % r
+    return return_string
+    
+    
     #Test if previous command worked
     
-    for boss in r["bosses"]:
-        boss_name = boss["name"]
-        return_string = ''
-        return_string += "Boss Name: %s" % boss_name
-    return return_string
+    
+    
+#    for boss in r["bosses"]:
+ #       boss_name = boss["name"]
+  #      return_string = ''
+   #     return_string += "Boss Name: %s" % boss_name
+    #return return_string
 """
     nkills = 0
     hkills = 0
