@@ -25,16 +25,17 @@ def get_char(name, server, target_region, api_key):
 
     equipped_ilvl = player_dict["items"]["averageItemLevelEquipped"]
     average_ilvl = player_dict["items"]["averageItemLevel"]
-
+"""
     #Test
 def get_raid_progression(player_dictionary, raid):
     r = (x for x in player_dictionary["progression"]["raids"] if x["name"] in cRAID)
-
+"""
     
     #output test
     return_string = ''
     return_string += "test1: %s \n" % cRAID
-    return_string += "test2: %s \n" % r
+    return_string += "Equipped Item Level: %s\n" % equipped_ilvl
+    return_string += "Average Item Level: %s\n\n" % average_ilvl
     return return_string
     
     
