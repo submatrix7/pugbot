@@ -32,11 +32,12 @@ def get_raid_progression(player_dictionary, raid):
 """
     
     #output test
-return_string = ''
-return_string += "test1: %s \n" % cRAID
-return_string += "Equipped Item Level: %s\n" % equipped_ilvl
-return_string += "Average Item Level: %s\n\n" % average_ilvl
-return return_string
+def get_raid_progression(player_dictionary):
+    return_string = ''
+    return_string += "test1: %s \n" % cRAID
+    return_string += "Equipped Item Level: %s\n" % equipped_ilvl
+    return_string += "Average Item Level: %s\n\n" % average_ilvl
+    return return_string
     
     
     #Test if previous command worked
