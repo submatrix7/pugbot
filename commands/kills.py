@@ -26,25 +26,22 @@ def get_char(name, server, target_region, api_key):
     equipped_ilvl = player_dict["items"]["averageItemLevelEquipped"]
     average_ilvl = player_dict["items"]["averageItemLevel"]
     
-    #output test
+def get_raid_progression(player_dictionary, raid):
+    r = (x for x in player_dictionary["progression"]["raids"] if x["name"] in cRAID)
+
     return_string = ''
+
+    for boss in r["bosses"]:
+        boss_name = boss["name"]
+        return_string += "Boss Name: %s" % boss_name
+        
     return_string += "test1: %s \n" % cRAID
     return_string += "Equipped Item Level: %s\n" % equipped_ilvl
     return_string += "Average Item Level: %s\n\n" % average_ilvl
     return return_string
+
+
 """
-    #Test
-def get_raid_progression(player_dictionary, raid):
-    r = (x for x in player_dictionary["progression"]["raids"] if x["name"] in cRAID)
-
-    #Test if previous command worked
-   
-    for boss in r["bosses"]:
-        boss_name = boss["name"]
-        return_string = ''
-        return_string += "Boss Name: %s" % boss_name
-    #return return_string
-
     nkills = 0
     hkills = 0
     mkills = 0
@@ -52,8 +49,8 @@ def get_raid_progression(player_dictionary, raid):
     
     boss_kills = {}
     for boss in r["bosses"]:
+        boss_name = boss["name"]
         boss_kills[boss_name] = {
-            'bossName': boss["name"],
             'nkills': boss["normalKills"],
             'hkills': boss["heroicKills"],
             'mkills': boss["mythicKills"]
