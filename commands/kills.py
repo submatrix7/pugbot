@@ -35,7 +35,7 @@ def get_raid_progression(player_dictionary, raid):
         boss_name = boss["name"]
         return_string += "Boss Name: %s" % boss_name
         
-    return_string += "test1: %s \n" % cRAID
+    #return_string += "test1: %s \n" % cRAID
     return_string += "Equipped Item Level: %s\n" % equipped_ilvl
     return_string += "Average Item Level: %s\n\n" % average_ilvl
     return return_string
