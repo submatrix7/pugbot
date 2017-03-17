@@ -2,7 +2,7 @@ import json
 import requests
 
 #Declare the current raid to gather boss kills from
-cRAID = ['The Nighthold']
+cRAID = 'The Nighthold'
 
 region_locale = {'us': ['us', 'en_US', 'en']}
 
