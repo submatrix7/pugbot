@@ -32,7 +32,7 @@ def get_raid_progression(player_dictionary, raid):
 
     #Test if previous command worked
     
-    for boss in r["bosses"]
+    for boss in r["bosses"]:
         boss_name = boss["name"]
         return_string = ''
         return_string += "Boss Name: %s" % boss_name
