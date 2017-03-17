@@ -36,6 +36,7 @@ def get_raid_progression(player_dictionary, raid):
         boss_name = boss["name"]
         return_string = ''
         return_string += "Boss Name: %s" % boss_name
+    return return_string
 """
     nkills = 0
     hkills = 0
@@ -74,10 +75,8 @@ def get_raid_progression(player_dictionary, raid):
         )
 
     return_string += '```'  # end Markdown
-
-"""
-
     return return_string
+"""
 
 async def kills(client, region, api_key, message):
     target_region = region
@@ -92,5 +91,5 @@ async def kills(client, region, api_key, message):
     except Exception as e:
         print(e)
         await client.send_message(message.channel, "Error With Name or Server\n"
-                                                   "Use: !prog <name> <server> <region>\n"
+                                                   "Use: ?prog <name> <server>\n"
                                                    "Hyphenate Two Word Servers (Ex: Twisting-Nether)")
