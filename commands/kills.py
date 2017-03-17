@@ -28,7 +28,7 @@ def get_char(name, server, target_region, api_key):
     
     #output test
     return_string = ''
-    #return_string += "test1: %s \n" % cRAID
+    return_string += "test1: %s \n" % cRAID
     return_string += "Equipped Item Level: %s\n" % equipped_ilvl
     return_string += "Average Item Level: %s\n\n" % average_ilvl
     return return_string
